@@ -20,9 +20,13 @@ export class Search extends React.Component {
   }
   
   handleChange = (event) => {
+    let $strSearch = event.target.value;
     this.setState({
-      strSearch: event.target.value
+      strSearch: $strSearch
     })
+    console.log('handleChange - ', this.state.strSearch,  event.target.value)
+
+    this.props.onClickGo($strSearch);
   }
 
   render() {
