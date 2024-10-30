@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderDailyHours } from 'help/utils'; // Absolute import from src/help
 
 export class Form extends React.Component {
   constructor(props) {
@@ -60,35 +61,15 @@ export class Form extends React.Component {
     event.preventDefault();
   }
 
-  render() {  
+  render() {
     return (
       <form onSubmit={this.handleSubmit} className="row m-2" action="">
         <div className="col-lg-2 col-sm-12 mt-3 mb-3 mt-md-0 mb-md-0 col-md-2">
           <div className="text-center">
             <select value={this.state.task_time} onChange={this.handleChange} name="task_time" className="form-control">
-              <option value={0}>0h</option>
-              <option value={1}>1h</option>
-              <option value={2}>2h</option>
-              <option value={3}>3h</option>
-              <option value={4}>4h</option>
-              <option value={5}>5h</option>
-              <option value={6}>6h</option>
-              <option value={7}>7h</option>
-              <option value={8}>8h</option>
-              <option value={9}>9h</option>
-              <option value={10}>10h</option>
-              <option value={11}>11h</option>
-              <option value={12}>12h</option>
-              <option value={13}>13h</option>
-              <option value={14}>14h</option>
-              <option value={15}>15h</option>
-              <option value={16}>16h</option>
-              <option value={17}>17h</option>
-              <option value={18}>18h</option>
-              <option value={19}>19h</option>
-              <option value={20}>20h</option>
-              <option value={21}>21h</option>
-              <option value={22}>22h</option>
+              {
+                renderDailyHours()
+              }
             </select>
           </div>
         </div>
