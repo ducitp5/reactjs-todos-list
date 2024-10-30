@@ -6,6 +6,7 @@ export class Form extends React.Component {
     this.state = {
       task_id: '',
       task_name: '',
+      task_age: 10,
       task_level: 0,
       task_time: 0,
       task_status: 0,
@@ -25,6 +26,7 @@ export class Form extends React.Component {
       this.setState({
         task_id: item.id,
         task_name: item.name,
+        task_age: item.age,
         task_level: item.level,
         task_time: item.time,
         task_status: item.status,
@@ -49,6 +51,7 @@ export class Form extends React.Component {
     let item = {
       id: this.state.task_id,
       name: this.state.task_name,
+      age: this.state.task_age,
       level: this.state.task_level,
       time: this.state.task_time,
       status: this.state.task_status
@@ -92,6 +95,15 @@ export class Form extends React.Component {
         <div className="col-lg-4 col-sm-12 col-md-3 p-md-0">
           <div>
             <input value={this.state.task_name} onChange={this.handleChange} name="task_name" type="text" className="form-control" placeholder="Name"/>
+          </div>
+        </div>
+        <div className="col-lg-4 col-sm-12 col-md-3 p-md-0">
+          <div>
+            <select value={this.state.task_age} onChange={this.handleChange} name="task_age" className="form-control">
+              {Array.from({ length: 91 }, (_, i) => (
+                  <option key={i} value={i + 10}>{i + 10}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="col-lg-2 col-sm-12 mt-3 mb-3 mt-md-0 mb-md-0 col-md-2">

@@ -91,6 +91,7 @@ class App extends React.Component {
     items.push({
       id: id,
       name: item.name,
+      age: item.age,
       level: +item.level,
       time: +item.time,
       status: +item.status

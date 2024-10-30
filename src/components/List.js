@@ -30,6 +30,7 @@ export class List extends React.Component {
               <th style={{ width: "10%" }} className="text-center">#</th>
               <th style={{ width: "10%" }} className="text-center">Time</th>
               <th>Name</th>
+              <th>age</th>
               <th style={{ width: "15%" }} className="text-center">Level</th>
               <th style={{ width: "15%" }} className="text-center">Status</th>
               <th style={{ width: "15%" }} >Action</th>

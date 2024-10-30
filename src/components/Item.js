@@ -24,6 +24,7 @@ export class Item extends React.Component {
         <td className="text-center">{index + 1}</td>
         <td className="text-center">{item.time + 'h'}</td>
         <td>{item.name}</td>
+        <td>{ item.age }</td>
         <td className="text-center">{this.showElmLevel(item.level)}</td>
         <td>{this.showStatus(item.status)}</td>
         <td>
