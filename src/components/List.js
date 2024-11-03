@@ -5,12 +5,24 @@ export class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      showLevelDropdown: false
     }
   }
 
+  toggleDropdown = () => {
+    this.setState({ showLevelDropdown: !this.state.showLevelDropdown });
+  };
+
+
+  handleLevelSelect = (level) => {
+    this.setState({ showLevelDropdown: false });
+    this.props.onClickLevelFilter(level); // Trigger level filter in App.js
+  };
+
   render() {
     let items = this.props.items;
+    const { showLevelDropdown } = this.state;
+
     const elmItem = items.map((item, index) => {
       return (
         <Item 
@@ -22,6 +34,7 @@ export class List extends React.Component {
           />
       )
     });
+
     return (
       <div className="panel panel-success">
         <table className="table table-hover table-responsive-lg">
@@ -31,7 +44,28 @@ export class List extends React.Component {
               <th style={{ width: "10%" }} className="text-center">Time</th>
               <th>Name</th>
               <th>age</th>
-              <th style={{ width: "15%" }} className="text-center">Level</th>
+              <th style={{ width: "15%" }} className="text-center">
+                <div className="dropdown d-inline ml-2">
+                  <button
+                      onClick={this.toggleDropdown}
+                      className="btn btn-secondary btn-sm dropdown-toggle"
+                      type="button"
+                  >
+                    Level
+                  </button>
+                  {
+                      showLevelDropdown &&
+                      (
+                        <div className="dropdown-menu show">
+                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(null)}>All</button>
+                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(0)}>Low</button>
+                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(1)}>Medium</button>
+                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(2)}>High</button>
+                        </div>
+                      )
+                  }
+                </div>
+              </th>
               <th style={{ width: "15%" }} className="text-center">Status</th>
               <th style={{ width: "15%" }} >Action</th>
             </tr>

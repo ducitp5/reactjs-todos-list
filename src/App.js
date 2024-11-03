@@ -19,7 +19,8 @@ class App extends React.Component {
       showForm: false,
       strSearch: "",
       orderBy: "time",
-      orderDif: "asc"
+      orderDif: "asc",
+      filterLevel: null // Add filter level to state
     }
   }
 
@@ -111,33 +112,30 @@ class App extends React.Component {
       showForm: true
     })
   }
-  
+
+  handleLevelFilter = (level) => {
+    this.setState({
+      filterLevel: level
+    });
+  };
+
   render() {
-    let itemsOrigin = (this.state.items !== null) ? [...this.state.items] : [];
+    let itemsOrigin = this.state.items ? [...this.state.items] : [];
     let items = [];
     let elmForm = null;
-    let {orderBy, orderDif, showForm, strSearch, itemSelected} = this.state;
+    const { orderBy, orderDif, showForm, strSearch, itemSelected, filterLevel } = this.state;
 
-    // Search
-    items = filter(itemsOrigin, (item) => {
-      return includes(item.name, strSearch);
-    });
+    // Filter items based on search and level filter
+    items = filter(itemsOrigin, (item) => includes(item.name, strSearch));
 
-    // Order
+    if (filterLevel !== null) {
+      items = items.filter((item) => item.level === filterLevel);
+    }
+
     items = funcOrderBy(items, [orderBy], [orderDif]);
 
-    // if(strSearch.length > 0) {
-    //   itemsOrigin.forEach((item) => {
-    //     if(item.name.toLowerCase().indexOf(strSearch) !== -1) {
-    //       items.push(item);
-    //     }
-    //   })
-    // } else {
-    //   items = itemsOrigin;
-    // }
-
-    if (showForm === true) {
-      elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.handleSubmit} onClickCancel={this.handleCancel}/>
+    if (showForm) {
+      elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.handleSubmit} onClickCancel={this.handleCancel} />;
     }
     return (
       <div className="App" >
@@ -159,6 +157,7 @@ class App extends React.Component {
                 onClickEdit={this.handleEdit}
                 items={items}
                 onClickDelete={this.handleDelete}
+                onClickLevelFilter={this.handleLevelFilter} // Pass level filter handler
               />
             </div>
             <Footer />
