@@ -30,3 +30,22 @@ export const renderLevelDifficult = () => {
         )
     );
 }
+
+export const renderLevelSelectButton = (handleLevelSelect) => {
+
+    let $levelMapArray = Object.entries(levelMap);
+
+    return $levelMapArray.map(
+        function ([levelNumber, levelObject], index, arrayOrigine) {
+            let $buttons =
+            (
+                <button key={levelNumber} className="dropdown-item"
+                        onClick={() => handleLevelSelect ? handleLevelSelect(Number(levelNumber)) : alert('handleLevelSelect not defined')}>
+                    {levelObject.levelLabel}
+                </button>
+            );
+            return $buttons;
+        }
+    );
+}
+

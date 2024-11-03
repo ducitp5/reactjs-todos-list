@@ -1,5 +1,6 @@
 import React from 'react';
 import { Item } from './Item';
+import {levelMap, renderLevelSelectButton} from "help/utils";
 
 export class List extends React.Component {
   constructor(props) {
@@ -57,10 +58,10 @@ export class List extends React.Component {
                       showLevelDropdown &&
                       (
                         <div className="dropdown-menu show">
-                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(null)}>All</button>
-                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(0)}>Low</button>
-                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(1)}>Medium</button>
-                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(2)}>High</button>
+                          <button className="dropdown-item" onClick={() => this.handleLevelSelect(null)}>
+                            All
+                          </button>
+                          { renderLevelSelectButton(this.handleLevelSelect) }
                         </div>
                       )
                   }
