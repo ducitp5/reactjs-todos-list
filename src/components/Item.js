@@ -1,4 +1,5 @@
 import React from 'react';
+import {levelMap, getLevelLabel} from "help/utils";
 
 export class Item extends React.Component {
   constructor(props) {
@@ -43,15 +44,14 @@ export class Item extends React.Component {
     return elmStatus;
   }
 
-  showElmLevel(level) {
-    let elmLevel = <span className="badge badge-pill badge-secondary">Low</span>;
-    if (level === 1) {
-      elmLevel = <span className="badge badge-pill badge-primary">Medium</span>;
-    } else if (level === 2) {
-      elmLevel = <span className="badge badge-pill badge-danger">High</span>;
-    }
-    return elmLevel;
+  // use the convertLever inside
+  showElmLevel(levelNumber) {
+    const levelLabel = getLevelLabel(levelNumber);
+    let badgeClass = "badge badge-pill " + levelMap[levelNumber]?.cssStyle;
+
+    return <span className={badgeClass}>{levelLabel}</span>;
   }
+
 };
 
 export default Item;

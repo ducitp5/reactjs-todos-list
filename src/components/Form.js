@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderDailyHours } from 'help/utils'; // Absolute import from src/help
+import {renderDailyHours, renderLevelDifficult} from 'help/utils'; // Absolute import from src/help
 
 export class Form extends React.Component {
   constructor(props) {
@@ -90,9 +90,7 @@ export class Form extends React.Component {
         <div className="col-lg-2 col-sm-12 mt-3 mb-3 mt-md-0 mb-md-0 col-md-2">
           <div className="text-center">
             <select value={this.state.task_level} onChange={this.handleChange} name="task_level" className="form-control">
-              <option value={0}>Low</option>
-              <option value={1}>Medium</option>
-              <option value={2}>High</option>
+              { renderLevelDifficult() }
             </select>
           </div>
         </div>
