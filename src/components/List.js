@@ -6,7 +6,9 @@ export class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLevelDropdown: false
+      showLevelDropdown: false,
+      currentPage: 1,
+      itemsPerPage: 0
     }
   }
 
@@ -20,24 +22,74 @@ export class List extends React.Component {
     this.props.onClickLevelFilter(level); // Trigger level filter in App.js
   };
 
+  handlePageChange = (pageNumber) => {
+    this.setState({ currentPage: pageNumber });
+  };
+
+  handleItemsPerPageChange = (event) => {
+    const itemsPerPage = Number(event.target.value);
+    this.setState({
+      itemsPerPage,
+      currentPage: 1 // Reset to first page when items per page changes
+    });
+  };
+
   render() {
     let items = this.props.items;
-    const { showLevelDropdown } = this.state;
+    const { showLevelDropdown, currentPage, itemsPerPage } = this.state;
 
-    const elmItem = items.map((item, index) => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = itemsPerPage ? items.slice(indexOfFirstItem, indexOfLastItem) : items;
+
+    const elmItem = currentItems.map((item, index) => {
       return (
         <Item 
           onClickEdit={this.props.onClickEdit}
-          onClickDelete={this.props.onClickDelete} 
-          key={index} 
-          item={item} 
-          index={index}
-          />
+          onClickDelete={this.props.onClickDelete}
+          key={item.id}
+          item={item}
+          index={indexOfFirstItem + index} // Maintain the correct index
+        />
       )
     });
 
+    const totalPages = itemsPerPage ? Math.ceil(items.length / itemsPerPage) : Math.ceil(items.length);
+
     return (
       <div className="panel panel-success">
+        {/* Pagination and Items per Page Controls */}
+        <div className="d-flex justify-content-between align-items-center mt-3">
+          <div className="pagination">
+            {
+              Array.from(
+                { length: itemsPerPage ? totalPages : 1},
+                  (_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => this.handlePageChange(index + 1)}
+                        className={`btn btn-sm ${currentPage === index + 1 ? 'btn-primary' : 'btn-secondary'}`}
+                    >
+                      {index + 1}
+                    </button>
+                  )
+              )
+            }
+          </div>
+
+          <div className="ml-auto">
+            <label className="mr-2">Items per page:</label>
+            <input
+                type="number"
+                min="1"
+                value={itemsPerPage}
+                onChange={this.handleItemsPerPageChange}
+                className="form-control d-inline-block"
+                style={{ width: "80px" }}
+            />
+          </div>
+        </div>
+
         <table className="table table-hover table-responsive-lg">
           <thead>
             <tr>
@@ -75,6 +127,7 @@ export class List extends React.Component {
             {elmItem}
           </tbody>
         </table>
+
       </div>
     )
   }
