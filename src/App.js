@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 // import items from './mocks/tasks';
 import {filter, includes, orderBy as funcOrderBy, remove, reject} from 'lodash';
 import uuid from 'react-uuid';
+import defaultTasks from './data/defaultTasks.json';
 
 class App extends React.Component {
   constructor(props) {
@@ -163,6 +164,15 @@ class App extends React.Component {
     }
   };
 
+  handleLoadDefaultTasks = () => {
+    // Save default tasks to localStorage
+    localStorage.setItem("task", JSON.stringify(defaultTasks));
+
+    // Update state with the loaded default tasks to refresh the List component
+    this.setState({ items: defaultTasks });
+
+    alert("Default tasks loaded successfully!");
+  };
   render() {
     let itemsOrigin = this.state.items ? [...this.state.items] : [];
     let items = [];
@@ -201,6 +211,13 @@ class App extends React.Component {
                 />
               </label>
             </div>
+
+            <div className="d-flex justify-content-center mb-3">
+              <button onClick={this.handleLoadDefaultTasks} className="btn btn-info mr-2">
+                Load Default Tasks
+              </button>
+            </div>
+
             <div className="card-body">
               <Controller
                 orderBy={orderBy}
