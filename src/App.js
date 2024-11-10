@@ -119,6 +119,50 @@ class App extends React.Component {
     });
   };
 
+  handleDownloadTasks = () => {
+    const tasks = localStorage.getItem("task");
+    const tasksData = tasks ? JSON.parse(tasks) : [];
+
+    const fileData = new Blob(
+        [JSON.stringify(tasksData, null, 2)],
+        { type: 'application/json' }
+    );
+
+    const $objectURL = URL.createObjectURL(fileData);
+
+    // Create a temporary link to trigger download
+    const $a_downloadLink = document.createElement('a');
+    $a_downloadLink.href = $objectURL;
+    $a_downloadLink.download = 'defaultTasks.json';
+
+    $a_downloadLink.click();
+  };
+
+  handleLoadTaskFromLocal = (event) => {
+
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.readAsText(file);
+
+      reader.onload = (e) => {
+        try {
+          const tasks = JSON.parse(e.target.result);
+
+          localStorage.setItem("task", JSON.stringify(tasks));
+          this.setState({ items: tasks });
+          alert("Tasks loaded successfully!");
+        }
+        catch (error) {
+          console.error("Error parsing JSON:", error);
+          alert("Invalid JSON file format.");
+        }
+      };
+    }
+  };
+
   render() {
     let itemsOrigin = this.state.items ? [...this.state.items] : [];
     let items = [];
@@ -143,6 +187,20 @@ class App extends React.Component {
         <div className="container mt-3 mb-3 mt-lg-5 mb-lg-5">
           <div className="card text-center border-secondary">
             <Header />
+            <div className="d-flex justify-content-center mb-3">
+              <button onClick={this.handleDownloadTasks} className="btn btn-primary mr-2">
+                Save to Local
+              </button>
+              <label className="btn btn-success mb-0 mr-2"> {/* Different color for Load button */}
+                Load Tasks
+                <input
+                    type="file"
+                    accept=".json"
+                    onChange={this.handleLoadTaskFromLocal}
+                    style={{ display: 'none' }} // Hide the actual input
+                />
+              </label>
+            </div>
             <div className="card-body">
               <Controller
                 orderBy={orderBy}
