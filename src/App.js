@@ -32,6 +32,17 @@ class App extends React.Component {
     })
   }
 
+  componentDidMount() {
+    // Load data from JSON Server
+    fetch("http://localhost:3001/tasks")
+        .then(response => response.json())
+        .then(
+            data => {
+              this.setState({ items: data })
+            }
+        )
+        .catch(error => console.error("Error loading tasks:", error));
+  }
   handleToggleForm = () => {
     this.setState({
       showForm: !this.state.showForm,
