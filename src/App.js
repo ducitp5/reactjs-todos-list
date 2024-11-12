@@ -81,7 +81,27 @@ class App extends React.Component {
     localStorage.setItem("task", JSON.stringify(items));
   }
 
-  handleSubmit = (item) => {
+  addTaskToJsonDB = (newTask) => {
+    fetch("http://localhost:3001/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newTask)
+    })
+        .then(response => response.json())
+        .then(task => {
+
+          console.log(11122, task)
+          this.setState(prevState => ({
+            items: [...prevState.items, task]
+          }));
+        })
+        .catch(error => console.error("Error adding task:", error));
+  };
+
+  addTaskTolocalStorage = (item) => {
+
     let {items} = this.state;
     let id = null;
 
@@ -116,6 +136,13 @@ class App extends React.Component {
     })
 
     localStorage.setItem("task", JSON.stringify(items));
+  }
+
+  addNewTaskSubmit = (item) => {
+
+    item.id = uuid();
+    this.addTaskToJsonDB(item);
+    // this.addTaskTolocalStorage(item)
   }
 
   handleEdit = (item) => {
@@ -200,7 +227,7 @@ class App extends React.Component {
     items = funcOrderBy(items, [orderBy], [orderDif]);
 
     if (showForm) {
-      elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.handleSubmit} onClickCancel={this.handleCancel} />;
+      elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.addNewTaskSubmit} onClickCancel={this.handleCancel} />;
     }
     return (
       <div className="App" >
