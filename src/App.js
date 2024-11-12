@@ -102,21 +102,36 @@ class App extends React.Component {
     localStorage.setItem("task", JSON.stringify(items));
   }
 
-  addTaskToJsonDB = (newTask) => {
+  addTaskToJsonDB = (item) => {
+    console.log('addTaskToJsonDB 1', item, this.state.items)
+
+    if(item.id)   this.deleteTaskFromJsonDB(item.id);
+
+    else{
+      item.id = uuid();
+    }
+    console.log('addTaskToJsonDB 2', item, this.state.items) // when I make update the item, still have the item in this.state.items
+
     fetch("http://localhost:3001/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(newTask)
+      body: JSON.stringify(item)
     })
         .then(response => response.json())
         .then(task => {
 
-          console.log(11122, task)
-          this.setState(prevState => ({
-            items: [...prevState.items, task]
-          }));
+          console.log(11122, task, this.state.items) // why the item was deleted in this.state.items ?
+          this.setState(
+            prevState => {
+              console.log("Previous state:", prevState); // This logs prevState before updating
+              return {
+                items: [...prevState.items, task],
+                showForm: false
+              };
+            }
+          );
         })
         .catch(error => console.error("Error adding task:", error));
   };
