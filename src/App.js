@@ -43,6 +43,21 @@ class App extends React.Component {
         )
         .catch(error => console.error("Error loading tasks:", error));
   }
+
+  deleteTaskFromJsonDB = (id) => {
+    console.log('deleteTaskFromJsonDB', id)
+    fetch(`http://localhost:3001/tasks/${id}`, {
+      method: "DELETE"
+    })
+        .then(() => {
+          // Remove the task from state
+          this.setState(prevState => ({
+            items: prevState.items.filter(item => item.id !== id)
+          }));
+        })
+        .catch(error => console.error("Error deleting task:", error));
+  };
+
   handleToggleForm = () => {
     this.setState({
       showForm: !this.state.showForm,
@@ -70,6 +85,12 @@ class App extends React.Component {
   }
 
   handleDelete = (id) => {
+    this.deleteTaskFromJsonDB(id);
+    // this.deleteTaskFromLocalStorage(id);
+  }
+
+  deleteTaskFromLocalStorage = (id) => {
+
     let items = this.state.items;
     remove(items, (item) => {
       return item.id === id;
