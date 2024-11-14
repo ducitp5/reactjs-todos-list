@@ -14,6 +14,7 @@ export class Sort extends React.Component {
 
   render() {
     let {orderBy, orderDif} = this.props;
+
     if (orderBy === "status") {
       if (orderDif === "asc") {
         orderDif = "not done"
@@ -21,7 +22,9 @@ export class Sort extends React.Component {
         orderDif = "done"
       }
     }
+
     let strSort = orderBy + ' - ' + orderDif;
+
     return (
       <div className="col-12 col-sm-6 col-lg-3 order-2 order-sm-1">
         <ul className="navbar-nav mr-auto flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center">

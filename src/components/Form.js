@@ -62,6 +62,7 @@ export class Form extends React.Component {
   }
 
   render() {
+
     return (
       <form onSubmit={this.handleSubmit} className="row m-2" action="">
         <div className="col-lg-2 col-sm-12 mt-3 mb-3 mt-md-0 mb-md-0 col-md-2">

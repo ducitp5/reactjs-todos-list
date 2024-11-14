@@ -120,14 +120,14 @@ class App extends React.Component {
       body: JSON.stringify(item)
     })
         .then(response => response.json())
-        .then(task => {
+        .then(newCreatedItem => {
 
-          console.log(11122, task, this.state.items) // why the item was deleted in this.state.items ?
+          console.log(11122, newCreatedItem, this.state.items) // why the item was deleted in this.state.items ?
           this.setState(
             prevState => {
               console.log("Previous state:", prevState); // This logs prevState before updating
               return {
-                items: [...prevState.items, task],
+                items: [...prevState.items, newCreatedItem],
                 showForm: false
               };
             }
@@ -176,7 +176,6 @@ class App extends React.Component {
 
   addNewTaskSubmit = (item) => {
 
-    item.id = uuid();
     this.addTaskToJsonDB(item);
     // this.addTaskTolocalStorage(item)
   }

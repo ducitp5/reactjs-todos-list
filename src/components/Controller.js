@@ -23,7 +23,8 @@ export class Controller extends React.Component {
     let {orderBy, orderDif} = this.props;
     if (form === false) {
       elmShowForm = <button onClick={this.handleAdd} type="button" className="btn btn-outline-info my-2 my-sm-0 btn-block" data-toggle="modal" data-target="#exampleModal">Add Item</button>
-    } else if (form === true) {
+    }
+    else if (form === true) {
       elmShowForm = <button onClick={this.handleClose} type="button" className="btn btn-outline-warning my-2 my-sm-0 btn-block" data-toggle="modal" data-target="#exampleModal">Close</button>
     }
     return (
