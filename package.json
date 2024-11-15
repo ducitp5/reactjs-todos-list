@@ -13,7 +13,7 @@
     "react-uuid": "^1.0.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run config\" \"npm run db-server\" \"react-scripts start\" ",
+    "start": "concurrently \"npm run config\" \"npm run db-server\" \"set PORT=3003 && react-scripts start\" ",
     "db-server": "json-server --watch src/data/database/db.json --port 3001",
     "config": "node config.js",
     "build": "react-scripts build",
