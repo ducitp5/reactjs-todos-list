@@ -10,13 +10,15 @@ import { Footer } from './components/Footer';
 import {filter, includes, orderBy as funcOrderBy, remove, reject} from 'lodash';
 import uuid from 'react-uuid';
 import defaultTasks from './data/defaultTasks.json';
+import * as taskJsonDbService from './service/taskJsonDbService';
+import * as LocalStorageService from './service/localStorageService';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      itemSelected: null, 
+      itemSelected: null,
       showForm: false,
       strSearch: "",
       orderBy: "time",
@@ -37,23 +39,22 @@ class App extends React.Component {
 
   }
 
-  loadTasksFromDB = () => {
-    // Load data from JSON Server
-    fetch("http://localhost:3001/tasks")
-      .then(response => response.json())
-      .then(data => {
-        this.setState(
-          {
-            items: data,
-            dataSource: "db"
-          }
-        );
-      })
-      .catch(error => console.error("Error loading tasks from db:", error));
+  loadTasksFromDB = async () => {
+
+    let $tasks = await taskJsonDbService.fetchTasksFromDB();
+    console.log('fetchTasksFromDB', $tasks)
+
+    this.setState(
+      {
+        items: $tasks,
+        dataSource: "db"
+      }
+    );
   };
 
   loadTasksFromLocalStorage = () => {
-    const tasks = JSON.parse(localStorage.getItem("task")) || [];
+
+    const tasks = LocalStorageService.fetchTasksFromLocalStorage();
 
     this.setState(
       {
@@ -63,19 +64,16 @@ class App extends React.Component {
     );
   };
 
+  deleteTaskFromJsonDB = async (id) => {
 
-  deleteTaskFromJsonDB = (id) => {
+    let $res = await taskJsonDbService.deleteTaskFromDB(id);
+    console.log('deleteTaskFromJsonDB()', $res)
 
-    fetch(`http://localhost:3001/tasks/${id}`, {
-      method: "DELETE"
-    })
-        .then(() => {
-          // Remove the task from state
-          this.setState(prevState => ({
-            items: prevState.items.filter(item => item.id !== id)
-          }));
-        })
-        .catch(error => console.error("Error deleting task:", error));
+    if($res){
+      this.setState(prevState => ({
+        items: prevState.items.filter(item => item.id !== id)
+      }));
+    }
   };
 
   handleToggleForm = () => {
