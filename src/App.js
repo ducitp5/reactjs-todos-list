@@ -21,31 +21,51 @@ class App extends React.Component {
       strSearch: "",
       orderBy: "time",
       orderDif: "asc",
-      filterLevel: null // Add filter level to state
+      filterLevel: null,
+      dataSource: localStorage.getItem("dataSource") || "db", // default to "db" if no choice saved
     }
   }
 
   UNSAFE_componentWillMount() {
-    let items = JSON.parse(localStorage.getItem("task")) || [];
-    this.setState({
-      items: items
-    })
+    let $dataSource = this.state.dataSource;
+
+    if($dataSource == 'db')     this.loadTasksFromDB();
+    else                        this.loadTasksFromLocalStorage();
   }
 
   componentDidMount() {
-    // Load data from JSON Server
-    fetch("http://localhost:3001/tasks")
-        .then(response => response.json())
-        .then(
-            data => {
-              this.setState({ items: data })
-            }
-        )
-        .catch(error => console.error("Error loading tasks:", error));
+
   }
 
+  loadTasksFromDB = () => {
+    // Load data from JSON Server
+    fetch("http://localhost:3001/tasks")
+      .then(response => response.json())
+      .then(data => {
+        this.setState(
+          {
+            items: data,
+            dataSource: "db"
+          }
+        );
+      })
+      .catch(error => console.error("Error loading tasks from db:", error));
+  };
+
+  loadTasksFromLocalStorage = () => {
+    const tasks = JSON.parse(localStorage.getItem("task")) || [];
+
+    this.setState(
+      {
+        items: tasks,
+        dataSource: "localStorage"
+      }
+    );
+  };
+
+
   deleteTaskFromJsonDB = (id) => {
-    console.log('deleteTaskFromJsonDB', id)
+
     fetch(`http://localhost:3001/tasks/${id}`, {
       method: "DELETE"
     })
@@ -85,8 +105,10 @@ class App extends React.Component {
   }
 
   handleDelete = (id) => {
-    this.deleteTaskFromJsonDB(id);
-    // this.deleteTaskFromLocalStorage(id);
+    let $dataSource = this.state.dataSource;
+
+    if($dataSource == 'db')   this.deleteTaskFromJsonDB(id);
+    else                      this.deleteTaskFromLocalStorage(id);
   }
 
   deleteTaskFromLocalStorage = (id) => {
@@ -176,8 +198,10 @@ class App extends React.Component {
 
   addNewTaskSubmit = (item) => {
 
-    this.addTaskToJsonDB(item);
-    // this.addTaskTolocalStorage(item)
+    let $dataSource = this.state.dataSource;
+
+    if($dataSource == 'db')   this.addTaskToJsonDB(item);
+    else                      this.addTaskTolocalStorage(item)
   }
 
   handleEdit = (item) => {
@@ -246,11 +270,32 @@ class App extends React.Component {
 
     alert("Default tasks loaded successfully!");
   };
+
+  handleToggleDataSource = () => {
+
+    const newSource = this.state.dataSource === "db" ? "localStorage" : "db";
+    localStorage.setItem("dataSource", newSource); // Save choice to localStorage
+
+    this.setState(
+      {
+        dataSource: newSource
+      },
+      () => {
+        if (newSource === "localStorage") {
+          this.loadTasksFromLocalStorage();
+        }
+        else {
+          this.loadTasksFromDB();
+        }
+      }
+    );
+  };
+
   render() {
     let itemsOrigin = this.state.items ? [...this.state.items] : [];
     let items = [];
     let elmForm = null;
-    const { orderBy, orderDif, showForm, strSearch, itemSelected, filterLevel } = this.state;
+    const { orderBy, orderDif, showForm, strSearch, itemSelected, filterLevel, dataSource } = this.state;
 
     // Filter items based on search and level filter
     items = filter(itemsOrigin, (item) => includes(item.name, strSearch));
@@ -264,12 +309,31 @@ class App extends React.Component {
     if (showForm) {
       elmForm = <Form itemSelected={itemSelected} onClickSubmit={this.addNewTaskSubmit} onClickCancel={this.handleCancel} />;
     }
+
     return (
       <div className="App" >
         <Logo />
         <div className="container mt-3 mb-3 mt-lg-5 mb-lg-5">
           <div className="card text-center border-secondary">
             <Header />
+
+            <div className="d-flex justify-content-center mb-3">
+              <button
+                  onClick={() => this.handleToggleDataSource("localStorage")}
+                  className="btn btn-primary mr-2"
+                  disabled={dataSource === "localStorage"}
+              >
+                Use Local Storage
+              </button>
+              <button
+                  onClick={() => this.handleToggleDataSource("db")}
+                  className="btn btn-success"
+                  disabled={dataSource === "db"}
+              >
+                Use DB.json
+              </button>
+            </div>
+
             <div className="d-flex justify-content-center mb-3">
               <button onClick={this.handleDownloadTasks} className="btn btn-primary mr-2">
                 Save to Local
