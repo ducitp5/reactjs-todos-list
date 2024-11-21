@@ -1,10 +1,15 @@
 import uuid from 'react-uuid';
+import * as config from 'help/config.js'
 
-const BASE_URL = "http://localhost:3001/tasks";
+const DB_HOST_TASK = config.DB_HOST_TASK;
+const HOST_PORT = config.APP_PORT;
+const DB_HOST = config.DB_HOST
+
+console.log(DB_HOST_TASK, HOST_PORT, DB_HOST)
 
 export const fetchTasksFromDB = async () => {
     try {
-        const response = await fetch(BASE_URL);
+        const response = await fetch(DB_HOST_TASK);
         if (!response.ok) throw new Error("Failed to fetch tasks from DB.");
         return await response.json();
     } catch (error) {
@@ -14,7 +19,7 @@ export const fetchTasksFromDB = async () => {
 };
 
 export const deleteTaskFromDB = async (id) => {
-    let $uri = `${BASE_URL}/${id}`;
+    let $uri = `${DB_HOST_TASK}/${id}`;
 
     try {
         const response = await fetch($uri, { method: "DELETE" });
