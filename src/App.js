@@ -12,6 +12,7 @@ import uuid from 'react-uuid';
 import defaultTasks from './data/defaultTasks.json';
 import * as taskJsonDbService from './service/taskJsonDbService';
 import * as LocalStorageService from './service/localStorageService';
+import * as config from "help/config";
 
 class App extends React.Component {
   constructor(props) {
@@ -132,7 +133,7 @@ class App extends React.Component {
     }
     console.log('addTaskToJsonDB 2', item, this.state.items) // when I make update the item, still have the item in this.state.items
 
-    fetch("http://localhost:3001/tasks", {
+    fetch(config.DB_HOST_TASK, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
