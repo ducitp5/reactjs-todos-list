@@ -7,7 +7,7 @@ const DB_HOST = config.DB_HOST
 
 console.log(DB_HOST_TASK, HOST_PORT, DB_HOST)
 
-export const fetchTasksFromDB = async () => {
+export const fetchTasksFromJsonDB = async () => {
     try {
         const response = await fetch(DB_HOST_TASK);
         if (!response.ok) throw new Error("Failed to fetch tasks from DB.");
@@ -18,7 +18,7 @@ export const fetchTasksFromDB = async () => {
     }
 };
 
-export const deleteTaskFromDB = async (id) => {
+export const deleteTaskFromJsonDB = async (id) => {
     let $uri = `${DB_HOST_TASK}/${id}`;
 
     try {
@@ -31,6 +31,22 @@ export const deleteTaskFromDB = async (id) => {
     catch (error) {
         console.error(error,$uri);
         return false;
+    }
+};
+
+export const addTaskToJsonDB = async (task) => {
+
+    try {
+        if (!task.id) task.id = uuid();
+        const response = await fetch(config.DB_HOST_TASK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(task),
+        });
+        if (!response.ok) throw new Error("Failed to add task to DB.");
+        return await response.json();
+    } catch (error) {
+        console.error(error);
     }
 };
 
@@ -48,17 +64,4 @@ export const deleteTaskFromDB = async (id) => {
 //     }
 // };
 //
-// export const addTaskToDB = async (task) => {
-//     try {
-//         if (!task.id) task.id = uuid();
-//         const response = await fetch(BASE_URL, {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(task),
-//         });
-//         if (!response.ok) throw new Error("Failed to add task to DB.");
-//         return await response.json();
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
+

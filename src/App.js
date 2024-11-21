@@ -32,17 +32,22 @@ class App extends React.Component {
   UNSAFE_componentWillMount() {
     let $dataSource = this.state.dataSource;
 
-    if($dataSource == 'db')     this.loadTasksFromDB();
+    if($dataSource == 'db')     this.fetchTasksFromJsonDB();
     else                        this.loadTasksFromLocalStorage();
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+
+    // console.log('componentWillUpdate()', nextProps, nextState, nextContext)
   }
 
   componentDidMount() {
 
   }
 
-  loadTasksFromDB = async () => {
+  fetchTasksFromJsonDB = async () => {
 
-    let $tasks = await taskJsonDbService.fetchTasksFromDB();
+    let $tasks = await taskJsonDbService.fetchTasksFromJsonDB();
     console.log('fetchTasksFromDB', $tasks)
 
     this.setState(
@@ -67,7 +72,7 @@ class App extends React.Component {
 
   deleteTaskFromJsonDB = async (id) => {
 
-    let $res = await taskJsonDbService.deleteTaskFromDB(id);
+    let $res = await taskJsonDbService.deleteTaskFromJsonDB(id);
     console.log('deleteTaskFromJsonDB()', $res)
 
     if($res){
@@ -123,38 +128,23 @@ class App extends React.Component {
     localStorage.setItem("task", JSON.stringify(items));
   }
 
-  addTaskToJsonDB = (item) => {
+  addTaskToJsonDB = async (item) => {
     console.log('addTaskToJsonDB 1', item, this.state.items)
 
-    if(item.id)   this.deleteTaskFromJsonDB(item.id);
+    if(item.id)   await this.deleteTaskFromJsonDB(item.id);
 
-    else{
-      item.id = uuid();
-    }
-    console.log('addTaskToJsonDB 2', item, this.state.items) // when I make update the item, still have the item in this.state.items
+    let $newCreatedItem = await taskJsonDbService.addTaskToJsonDB(item);
 
-    fetch(config.DB_HOST_TASK, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(item)
-    })
-        .then(response => response.json())
-        .then(newCreatedItem => {
+    this.setState(
+        prevState => {
+          console.log("Previous state:", prevState); // This logs prevState before updating
+          return {
+            items: [...prevState.items, $newCreatedItem],
+            showForm: false
+          };
+        }
+    );
 
-          console.log(11122, newCreatedItem, this.state.items) // why the item was deleted in this.state.items ?
-          this.setState(
-            prevState => {
-              console.log("Previous state:", prevState); // This logs prevState before updating
-              return {
-                items: [...prevState.items, newCreatedItem],
-                showForm: false
-              };
-            }
-          );
-        })
-        .catch(error => console.error("Error adding task:", error));
   };
 
   addTaskTolocalStorage = (item) => {
@@ -284,7 +274,7 @@ class App extends React.Component {
           this.loadTasksFromLocalStorage();
         }
         else {
-          this.loadTasksFromDB();
+          this.fetchTasksFromJsonDB();
         }
       }
     );
