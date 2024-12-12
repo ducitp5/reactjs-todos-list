@@ -5,6 +5,15 @@ require('dotenv').config();
 const app = express();
 const port = 5000;
 
+const cors = require('cors');
+
+// Enable CORS for all origins
+app.use(cors());
+
+// app.use(cors({
+//     origin: 'http://localhost:3000',
+// }));
+
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
