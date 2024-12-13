@@ -20,7 +20,7 @@
   "scripts": {
     "start": "concurrently \"npm run config\" \"npm run db-server\" \"npm run express-server\" \"set PORT=3000 && react-scripts start\" ",
     "db-server": "json-server --watch src/data/database/db.json --port 3001",
-    "express-server": "node express-server.js",
+    "express-server": "nodemon express-server.js",
     "config": "node config.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
