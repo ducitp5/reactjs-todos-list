@@ -6,6 +6,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -18,9 +21,10 @@
     "react-uuid": "^1.0.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run config\" \"npm run db-server\" \"npm run express-server\" \"set PORT=3000 && react-scripts start\" ",
+    "start": "concurrently --names \"npm run config\" \"npm run db-server\"  \"npm run update-env \" \"set PORT=3003 && react-scripts start\" ",
     "db-server": "json-server --watch src/data/database/db.json --port 3001",
-    "express-server": "nodemon express-server.js",
+    "express-server": "nodemon --inspect express-server.js",
+    "update-env": "nodemon --watch .env --exec 'npm start'",
     "config": "node config.js",
     "build": "react-scripts build",
     "test": "react-scripts test",

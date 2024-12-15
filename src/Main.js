@@ -21,7 +21,7 @@ const Main = () => {
     return (
         <>
             <UserList />
-            {true ? (
+            {isAuthenticated ? (
                 <div>
                     <button onClick={handleLogout} className="btn btn-danger">
                         Logout
