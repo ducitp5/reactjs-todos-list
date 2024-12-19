@@ -78,15 +78,24 @@ expressServer.post(
 );
 
 // API route to fetch data
-expressServer.get('/api/users', (req, res) => {
-    mySqlConnection.query('SELECT * FROM users', (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.json(results);
-        }
-    });
-});
+expressServer.get(
+    '/api/users',
+    (req, res) => {
+        mySqlConnection.query(
+            'SELECT * FROM users',
+            (err, results) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+
+                    res.json(results);
+                    // console.log($res, 2211111, res, res.json(results));
+
+                }
+            }
+        );
+    }
+);
 
 // Start the server
 expressServer.listen(port, () => {
