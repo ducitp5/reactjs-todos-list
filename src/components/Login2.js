@@ -1,35 +1,17 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Install axios for HTTP requests
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        alert(1111);
-        let response;
-        try {
-            // Send login request to backend
-            response = await axios.post(
-                'http://localhost:5000/api/login',
-                {
-                    username,
-                    password,
-                }
-            );
 
-            // alert(response.data.message); // Show success message
-            console.log(223344, response);
-            alert(2222);
-
-            onLogin(response.data.user); // Pass the logged-in user info
-        } catch (error) {
-            alert(9999)
-            console.log(1234, response, error);
-
-            alert(4444);
-            // alert(error.response?.data?.error || 'Login failed!');
+        // Hardcoded credentials for simplicity
+        if (username === 'admin' && password === 'password') {
+            onLogin(); // Trigger login
+        } else {
+            alert('Invalid credentials!');
         }
     };
 
@@ -48,7 +30,7 @@ const Login = ({ onLogin }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Password 33</label>
+                    <label>Password</label>
                     <input
                         type="password"
                         className="form-control"

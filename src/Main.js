@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import App from './App';
 import Login from './components/Login';
+import UserList from "./components/UserList";
 
 const Main = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(
@@ -19,6 +20,7 @@ const Main = () => {
 
     return (
         <>
+            <UserList />
             {isAuthenticated ? (
                 <div>
                     <button onClick={handleLogout} className="btn btn-danger">
