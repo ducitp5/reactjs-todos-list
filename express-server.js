@@ -20,6 +20,8 @@ expressServer.use('/api/login', authRoutes);
 expressServer.use('/api/users', userRoutes);
 
 const db = require('./src/config/db');
+const route = require('./src/routes')
+route(expressServer);
 
 expressServer.get('/api/query-users', (req, res) => {
 
