@@ -2,9 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const authRoutes = require('./src/routes/authRoutes');
-const userRoutes = require('./src/routes/userRoutes');
-
 const expressServer = express();
 
 // Enable CORS for all origins
@@ -16,8 +13,6 @@ expressServer.use(cors());
 
 expressServer.use(bodyParser.json()); // Parse JSON request bodies
 
-expressServer.use('/api/login', authRoutes);
-expressServer.use('/api/users', userRoutes);
 
 const db = require('./src/config/db');
 const route = require('./src/routes')
