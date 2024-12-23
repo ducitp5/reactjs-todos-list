@@ -10,6 +10,11 @@ class NewsController {
         res.send('NewsController show')
     }
 
+    edit(req, res) {
+        console.log('req - ', req.body)
+        res.send('NewsController edit')
+    }
+
 }
 
 module.exports = new NewsController();
