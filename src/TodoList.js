@@ -14,7 +14,7 @@ import * as taskJsonDbService from './service/taskJsonDbService';
 import * as LocalStorageService from './service/localStorageService';
 import * as config from "help/config";
 
-class App extends React.Component {
+class TodoList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -369,4 +369,4 @@ class App extends React.Component {
   }
 };
 
-export default App;
+export default TodoList;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import App from './App';
+import TodoList from './TodoList';
 import Login from './components/Login';
 import UserList from "./components/UserList";
 import About from "./components/About";
@@ -81,7 +81,7 @@ const Main = () => {
                         <button onClick={handleLogout} className="btn btn-danger">
                             {t('logout')}
                         </button>
-                        <App />
+                        <TodoList />
                     </div>
                 ) : (
                     <Login onLogin={handleLogin} />
