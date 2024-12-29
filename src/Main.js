@@ -13,6 +13,7 @@ const Main = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(
         localStorage.getItem('isAuthenticated') === 'true'
     );
+    const [theme, setTheme] = useState('light'); // Default theme is light
 
     const handleLogin = () => {
         setIsAuthenticated(true);
@@ -40,6 +41,10 @@ const Main = () => {
         setUseStatic(true); // Enable static translations
     };
 
+    const toggleTheme = () => {
+        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+
     // Function to decide which translation source to use
     const t = (key) => {
         if (useStatic) {
@@ -50,12 +55,16 @@ const Main = () => {
 
     return (
         <BrowserRouter>
-            <div>
+            <div className={`app-container ${theme}`}>
                 <LanguageToggle
                     t={t}
                     togglei18nextLanguage={togglei18nextLanguage}
                     toggleStaticLanguage={toggleStaticLanguage}
                 />
+
+                <button onClick={toggleTheme} className="btn btn-info">
+                    Toggle Theme - {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                </button>
 
                 <NavigationRoutes t={t} />
 
