@@ -1,3 +1,4 @@
+const path = require('path'); // Import the path module
 
 class NewsController {
 
@@ -15,6 +16,9 @@ class NewsController {
         res.send('NewsController edit')
     }
 
+    sendFile(req, res) {
+        res.sendFile(path.join(__dirname, '../views/layouts/index.html'));
+    }
 }
 
 module.exports = new NewsController();

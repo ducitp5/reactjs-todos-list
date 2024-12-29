@@ -46,6 +46,8 @@ expressServer.get('/api/query-users', (req, res) => {
         res.json(results);
     });
 
+expressServer.get('/sendFile', (req, res) => {
+    res.sendFile(__dirname + '/src/views/layouts/index.html');
 });
 
 const PORT = 5000;
