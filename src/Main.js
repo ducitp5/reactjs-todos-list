@@ -9,12 +9,9 @@ import './i18n';
 import translations from "./locales/translations";
 
 const Main = () => {
-    const { t: i18nT, i18n } = useTranslation(); // `t` from react-i18next
     const [isAuthenticated, setIsAuthenticated] = useState(
         localStorage.getItem('isAuthenticated') === 'true'
     );
-    const [useStatic, setUseStatic] = useState(false); // Toggle between i18next and static translations
-    const [language, setLanguage] = useState('en'); // Default language
 
     const handleLogin = () => {
         setIsAuthenticated(true);
@@ -26,11 +23,16 @@ const Main = () => {
         localStorage.removeItem('isAuthenticated');
     };
 
-    const toggleLanguage = () => {
+    const { t: i18nT, i18n } = useTranslation(); // `t` from react-i18next
+    const [useStatic, setUseStatic] = useState(false); // Toggle between i18next and static translations
+
+    const togglei18nextLanguage = () => {
         setUseStatic(false); // Enable static translations
         const newLang = i18n.language === 'en' ? 'vi' : 'en';
         i18n.changeLanguage(newLang);
     };
+
+    const [language, setLanguage] = useState('en'); // Default language
 
     const toggleStaticLanguage = () => {
         setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'vi' : 'en'));
@@ -56,7 +58,7 @@ const Main = () => {
                 </nav>
 
                 {/* Buttons to toggle language */}
-                <button onClick={toggleLanguage} className="btn btn-primary">
+                <button onClick={togglei18nextLanguage} className="btn btn-primary">
                     {t('switchLanguage')} - i18next
                 </button>
 
