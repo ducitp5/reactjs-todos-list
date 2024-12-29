@@ -1,14 +1,13 @@
+// src/Main.js
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TodoList from './TodoList';
 import Login from './components/Login';
-import UserList from "./components/UserList";
-import About from "./components/About";
+import LanguageToggle from './components/LanguageToggle';
+import NavigationRoutes from './components/NavigationRoutes';
 import './i18n';
-import translations from "./locales/translations";
-import CounterWithProvider from "./features/counter/Counter";
-
+import translations from './locales/translations';
 
 const Main = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(
@@ -52,29 +51,13 @@ const Main = () => {
     return (
         <BrowserRouter>
             <div>
-                <nav>
-                    <ul>
-                        <li><Link to="/">{t('home')}</Link></li>
-                        <li><Link to="/about">{t('about')}</Link></li>
-                        <li><Link to="/counter">Counter</Link></li>
-                    </ul>
-                </nav>
+                <LanguageToggle
+                    t={t}
+                    togglei18nextLanguage={togglei18nextLanguage}
+                    toggleStaticLanguage={toggleStaticLanguage}
+                />
 
-                {/* Buttons to toggle language */}
-                <button onClick={togglei18nextLanguage} className="btn btn-primary">
-                    {t('switchLanguage')} - i18next
-                </button>
-
-                <button onClick={toggleStaticLanguage} className="btn btn-secondary">
-                    {t('switchLanguage')} - Static
-                </button>
-
-                <Routes>
-                    <Route path="/" element={<UserList />} />
-                    <Route path="/about" element={<About />} />
-
-                    <Route path="/counter" element={<CounterWithProvider />} />
-                </Routes>
+                <NavigationRoutes t={t} />
 
                 {isAuthenticated ? (
                     <div>
