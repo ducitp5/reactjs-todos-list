@@ -7,6 +7,8 @@ import UserList from "./components/UserList";
 import About from "./components/About";
 import './i18n';
 import translations from "./locales/translations";
+import CounterWithProvider from "./features/counter/Counter";
+
 
 const Main = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(
@@ -54,6 +56,7 @@ const Main = () => {
                     <ul>
                         <li><Link to="/">{t('home')}</Link></li>
                         <li><Link to="/about">{t('about')}</Link></li>
+                        <li><Link to="/counter">Counter</Link></li>
                     </ul>
                 </nav>
 
@@ -69,6 +72,8 @@ const Main = () => {
                 <Routes>
                     <Route path="/" element={<UserList />} />
                     <Route path="/about" element={<About />} />
+
+                    <Route path="/counter" element={<CounterWithProvider />} />
                 </Routes>
 
                 {isAuthenticated ? (
