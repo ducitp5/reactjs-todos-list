@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement, incrementByAmount } from './counterSlice';
-import store from "../../app/store";
+import store from "../../../app/store";
 import { Provider } from 'react-redux';
 
 const Counter = () => {

@@ -1,9 +1,9 @@
 // src/components/NavigationRoutes.js
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
-import UserList from './UserList';
-import About from './About';
-import CounterWithProvider from '../features/counter/Counter';
+import UserList from './NavigationRoutes/UserList';
+import About from './NavigationRoutes/About';
+import CounterWithProvider from './NavigationRoutes/counter/Counter';
 
 const NavigationRoutes = ({ t }) => (
     <div>
