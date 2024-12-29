@@ -1,17 +1,17 @@
 import React from 'react';
-import './App.css';
-import { Logo } from './components/Logo';
-import { Header } from './components/Header';
-import { Controller } from './components/Controller';
-import { Form } from './components/Form';
-import { List } from './components/List';
-import { Footer } from './components/Footer';
+import '../App.css';
+import { Logo } from './TodoList/Logo';
+import { Header } from './TodoList/Header';
+import { Controller } from './TodoList/Controller';
+import { Form } from './TodoList/Form';
+import { List } from './TodoList/List';
+import { Footer } from './TodoList/Footer';
 // import items from './mocks/tasks';
 import {filter, includes, orderBy as funcOrderBy, remove, reject} from 'lodash';
 import uuid from 'react-uuid';
-import defaultTasks from './data/defaultTasks.json';
-import * as taskJsonDbService from './service/taskJsonDbService';
-import * as LocalStorageService from './service/localStorageService';
+import defaultTasks from '../data/defaultTasks.json';
+import * as taskJsonDbService from '../service/taskJsonDbService';
+import * as LocalStorageService from '../service/localStorageService';
 import * as config from "help/config";
 
 class TodoList extends React.Component {

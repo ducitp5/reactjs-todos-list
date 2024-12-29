@@ -2,14 +2,14 @@
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import TodoList from './TodoList';
+import TodoList from './components/TodoList';
 import Login from './components/Login';
 import LanguageToggle from './components/LanguageToggle';
 import NavigationRoutes from './components/NavigationRoutes';
 import './i18n';
 import translations from './locales/translations';
 
-const Main = () => {
+const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(
         localStorage.getItem('isAuthenticated') === 'true'
     );
@@ -29,28 +29,27 @@ const Main = () => {
     const [useStatic, setUseStatic] = useState(false); // Toggle between i18next and static translations
 
     const togglei18nextLanguage = () => {
-        setUseStatic(false); // Enable static translations
+        setUseStatic(false);
         const newLang = i18n.language === 'en' ? 'vi' : 'en';
         i18n.changeLanguage(newLang);
     };
 
-    const [language, setLanguage] = useState('en'); // Default language
+    const [language, setLanguage] = useState('en');
 
     const toggleStaticLanguage = () => {
         setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'vi' : 'en'));
-        setUseStatic(true); // Enable static translations
+        setUseStatic(true);
     };
 
     const toggleTheme = () => {
         setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
     };
 
-    // Function to decide which translation source to use
     const t = (key) => {
         if (useStatic) {
-            return translations[language][key] || key; // Fallback to key if translation not found
+            return translations[language][key] || key;
         }
-        return i18nT(key); // Use i18next translation
+        return i18nT(key);
     };
 
     return (
@@ -83,4 +82,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default App;

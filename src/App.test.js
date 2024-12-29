@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import TodoList from './TodoList';
+import TodoList from './components/TodoList';
 
 test('renders learn react link', () => {
   const { getByText } = render(<TodoList />);
